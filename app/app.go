@@ -10,11 +10,12 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type App struct {
+type App struct { // Hold the Application, expose reference to the router and the DB that the App uses
 	Router mux.Router
 	DB     *sql.DB
 }
 
+// Initialize the Application
 func (a *App) Initialize(user, password, dbname string) {
 	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s", user, password, dbname)
 
@@ -28,6 +29,8 @@ func (a *App) Initialize(user, password, dbname string) {
 		fmt.Fprint(resp, "Salut - Gorilla!")
 	})
 }
+
+// Run it
 func (a *App) Run(addr string) {
 	log.Fatal(http.ListenAndServe(addr, &a.Router))
 }
